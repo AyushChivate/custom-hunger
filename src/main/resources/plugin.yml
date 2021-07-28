@@ -1,0 +1,15 @@
+name: CustomHunger
+version: ${project.version}
+main: io.github.ayushchivate.customhunger.CustomHungerPlugin
+api-version: 1.16
+
+commands:
+  customhunger:
+    description: Allows you to use commands within the Custom Hunger plugin.
+    aliases:
+      - ch
+      - chung
+
+permissions:
+  customhunger.commands:
+    default: op

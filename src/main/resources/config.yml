@@ -1,0 +1,31 @@
+# Minimum cannot be less than 0 and Maximum cannot be more than 20
+
+Default Hunger: 10    # Leave blank if you do not want to set a custom default value
+
+Wretched Hunger:
+  Minimum: 1
+  Maximum: 2
+
+Squalid Hunger:
+  Minimum: 3
+  Maximum: 4
+
+Poor Hunger:
+  Minimum: 5
+  Maximum: 6
+
+Modest Hunger:
+  Minimum: 7
+  Maximum: 8
+
+Comfy Hunger:
+  Minimum: 9
+  Maximum: 11
+
+Wealthy Hunger:
+  Minimum: 12
+  Maximum: 14
+
+Aristocratic Hunger:
+  Minimum: 15
+  Maximum: 17
