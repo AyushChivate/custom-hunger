@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -334,10 +335,10 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         ItemStack clickedItem = event.getCurrentItem();
 
         /* make sure the player has clicked in a custom hunger inventory */
-        if (!(clickedInventoryName.equals("Wretched") || clickedInventoryName.equals("Squalid") ||
-                clickedInventoryName.equals("Poor") || clickedInventoryName.equals("Modest") ||
-                clickedInventoryName.equals("Comfy") || clickedInventoryName.equals("Wealthy") ||
-                clickedInventoryName.equals("Aristocratic"))) {
+        if (!(clickedInventoryName.equals("Wretched") || !clickedInventoryName.equals("Squalid") ||
+                !clickedInventoryName.equals("Poor") || !clickedInventoryName.equals("Modest") ||
+                !clickedInventoryName.equals("Comfy") || !clickedInventoryName.equals("Wealthy") ||
+                !clickedInventoryName.equals("Aristocratic"))) {
             return;
         }
 
@@ -481,10 +482,10 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
     }
 
     @EventHandler
-    public void onPlayerEat(FoodLevelChangeEvent e) {
+    public void onPlayerEat(PlayerItemConsumeEvent e) {
 
         ItemStack food = e.getItem();
-        Player player = (Player) e.getEntity();
+        Player player = e.getPlayer();
 
         Map<String, List<Inventory>> allPages = new HashMap<String, List<Inventory>>() {{
             put("wretched", wretchedPages);
@@ -497,7 +498,6 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         }};
 
         ThreadLocalRandom r = ThreadLocalRandom.current();
-
         for (Map.Entry<String, List<Inventory>> pages : allPages.entrySet()) {
             for (Inventory inventory : pages.getValue()) {
                 for (ItemStack inventoryFood : inventory.getContents()) {
@@ -559,12 +559,12 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         }
 
         int defaultHunger = customHungerConfig.getDefaultHunger();
-
         if (defaultHunger != -1) {
             /*player.setHunger(player.getHunger() + defaultHunger);*/
             e.setCancelled(true);
             player.setFoodLevel(player.getFoodLevel() + defaultHunger);
         }
+
     }
 
     /**
