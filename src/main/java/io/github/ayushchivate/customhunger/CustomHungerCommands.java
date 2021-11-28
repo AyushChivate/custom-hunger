@@ -335,10 +335,10 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         ItemStack clickedItem = event.getCurrentItem();
 
         /* make sure the player has clicked in a custom hunger inventory */
-        if (!(clickedInventoryName.equals("Wretched") || !clickedInventoryName.equals("Squalid") ||
-                !clickedInventoryName.equals("Poor") || !clickedInventoryName.equals("Modest") ||
-                !clickedInventoryName.equals("Comfy") || !clickedInventoryName.equals("Wealthy") ||
-                !clickedInventoryName.equals("Aristocratic"))) {
+        if (!(clickedInventoryName.equals("Wretched") || clickedInventoryName.equals("Squalid") ||
+                clickedInventoryName.equals("Poor") || clickedInventoryName.equals("Modest") ||
+                clickedInventoryName.equals("Comfy") || clickedInventoryName.equals("Wealthy") ||
+                clickedInventoryName.equals("Aristocratic"))) {
             return;
         }
 
