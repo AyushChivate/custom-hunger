@@ -17,19 +17,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.print.DocFlavor;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CustomHungerCommands implements CommandExecutor, Listener {
 
     private final List<String> VALID_INVENTORY_NAMES = Arrays.asList(
-            "Wretched",
-            "Squalid",
-            "Poor",
-            "Modest",
-            "Comfy",
-            "Wealthy",
-            "Aristocratic"
+        "Wretched",
+        "Squalid",
+        "Poor",
+        "Modest",
+        "Comfy",
+        "Wealthy",
+        "Aristocratic"
     );
 
     /* menu button locations */
@@ -282,6 +283,9 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         player.sendMessage(ChatColor.LIGHT_PURPLE + "  ○ " + ChatColor.YELLOW + "/ch [aristocratic | a]");
         player.sendMessage("");
 
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "  ○ " + ChatColor.YELLOW + "/ch lowerhunger");
+        player.sendMessage("");
+
         player.sendMessage(ChatColor.LIGHT_PURPLE + "  ○ " + ChatColor.YELLOW + "/ch reload");
         player.sendMessage(ChatColor.WHITE + "        Reloads the config.yml file. Must be executed after");
         player.sendMessage(ChatColor.WHITE + "        making changes to the config.yml file.");
@@ -485,9 +489,10 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
                 inventory.setItem(i, new ItemStack(Material.RED_STAINED_GLASS_PANE));
             }
         }
+
     }
 
-    @EventHandler
+     @EventHandler
     public void onPlayerEat(PlayerItemConsumeEvent e) {
 
         ItemStack food = e.getItem();
@@ -508,53 +513,47 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
             for (Inventory inventory : pages.getValue()) {
                 for (ItemStack inventoryFood : inventory.getContents()) {
                     if (isSimilar(inventoryFood, food)) {
-                        switch (pages.getKey()) {
+
+                        String key = pages.getKey();
+                        if(customHungerPlugin.isInDebugMode()){
+                            customHungerPlugin.getLogger().info("DEBUG - PLAYER: " + player.getName() + " | HUNGER CATEGORY: " + pages.getKey());
+                        }
+
+                        if(allPages.containsKey(key)){
+                            e.setCancelled(true);
+                            e.getPlayer().getInventory().getItemInOffHand().setAmount(e.getPlayer().getInventory().getItemInOffHand().getAmount() - 1);
+                        }
+
+                        switch (key) {
                             case "wretched":
-                                e.setCancelled(true);
                                 /*player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getWretchedHunger()[0],
                                         customHungerConfig.getWretchedHunger()[1] + 1));*/
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getWretchedHunger()[0],
                                         customHungerConfig.getWretchedHunger()[1] + 1));
                                 return;
                             case "squalid":
-                                e.setCancelled(true);
                                 /*player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getSqualidHunger()[0],
                                         customHungerConfig.getSqualidHunger()[1] + 1));*/
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getSqualidHunger()[0],
                                         customHungerConfig.getSqualidHunger()[1] + 1));
                                 return;
                             case "poor":
-                                e.setCancelled(true);
-                                /* player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getPoorHunger()[0],
-                                        customHungerConfig.getPoorHunger()[1] + 1)); */
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getPoorHunger()[0],
                                         customHungerConfig.getPoorHunger()[1] + 1));
                                 return;
                             case "modest":
-                                e.setCancelled(true);
-                                /* player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getModestHunger()[0],
-                                        customHungerConfig.getModestHunger()[1] + 1)); */
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getModestHunger()[0],
                                         customHungerConfig.getModestHunger()[1] + 1));
                                 return;
                             case "comfy":
-                                e.setCancelled(true);
-                                /* player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getComfyHunger()[0],
-                                        customHungerConfig.getComfyHunger()[1] + 1)); */
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getComfyHunger()[0],
                                         customHungerConfig.getComfyHunger()[1] + 1));
                                 return;
                             case "wealthy":
-                                e.setCancelled(true);
-                                /* player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getWealthyHunger()[0],
-                                        customHungerConfig.getWealthyHunger()[1] + 1)); */
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getWealthyHunger()[0],
                                         customHungerConfig.getWealthyHunger()[1] + 1));
                                 return;
                             case "aristocratic":
-                                e.setCancelled(true);
-                                /* player.setHunger(player.getHunger() + r.nextInt(customHungerConfig.getAristocraticHunger()[0],
-                                        customHungerConfig.getAristocraticHunger()[1] + 1)); */
                                 player.setFoodLevel(player.getFoodLevel() + r.nextInt(customHungerConfig.getAristocraticHunger()[0],
                                         customHungerConfig.getAristocraticHunger()[1] + 1));
                                 return;
@@ -566,8 +565,11 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
 
         int defaultHunger = customHungerConfig.getDefaultHunger();
         if (defaultHunger != -1) {
-            /*player.setHunger(player.getHunger() + defaultHunger);*/
+            if(customHungerPlugin.isInDebugMode()){
+                customHungerPlugin.getLogger().info("DEBUG - PLAYER: " + player.getName() + " | HUNGER CATEGORY: DEFAULT (" + defaultHunger + ")");
+            }
             e.setCancelled(true);
+            e.getPlayer().getInventory().getItemInOffHand().setAmount(e.getPlayer().getInventory().getItemInOffHand().getAmount() - 1);
             player.setFoodLevel(player.getFoodLevel() + defaultHunger);
         }
 
