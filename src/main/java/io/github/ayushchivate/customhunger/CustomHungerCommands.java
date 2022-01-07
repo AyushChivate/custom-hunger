@@ -22,6 +22,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CustomHungerCommands implements CommandExecutor, Listener {
 
+    private final List<String> VALID_INVENTORY_NAMES = Arrays.asList(
+            "Wretched",
+            "Squalid",
+            "Poor",
+            "Modest",
+            "Comfy",
+            "Wealthy",
+            "Aristocratic"
+    );
+
     /* menu button locations */
     public static final int INVENTORY_SIZE = 54;
     private static final int BACK_ARROW_INDEX = 45;
@@ -68,7 +78,6 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         setInventoryMenu(this.comfyInventory, true, false, true);
         setInventoryMenu(this.wealthyInventory, true, false, true);
         setInventoryMenu(this.aristocraticInventory, true, false, true);
-
 
         /* sets the saved data to the pages if it's not empty, otherwise, it adds the default inventory */
 
@@ -200,7 +209,7 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
     }
 
     private void reload() {
-        this.customHungerConfig.reloadConfig();
+        customHungerPlugin.reload();
         this.player.sendMessage(ChatColor.GREEN + "[CustomHunger] Plugin has been reloaded successfully!");
     }
 
@@ -335,10 +344,7 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         ItemStack clickedItem = event.getCurrentItem();
 
         /* make sure the player has clicked in a custom hunger inventory */
-        if (!(clickedInventoryName.equals("Wretched") || !clickedInventoryName.equals("Squalid") ||
-                !clickedInventoryName.equals("Poor") || !clickedInventoryName.equals("Modest") ||
-                !clickedInventoryName.equals("Comfy") || !clickedInventoryName.equals("Wealthy") ||
-                !clickedInventoryName.equals("Aristocratic"))) {
+        if(!VALID_INVENTORY_NAMES.contains(clickedInventoryName)){
             return;
         }
 
@@ -613,4 +619,5 @@ public class CustomHungerCommands implements CommandExecutor, Listener {
         /*player.setHunger(1);*/
         player.setFoodLevel(1);
     }
+
 }

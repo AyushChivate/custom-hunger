@@ -1,5 +1,6 @@
 # Minimum cannot be less than 0 and Maximum cannot be more than 20
 
+Debug Mode: false
 Default Hunger: 10    # Leave blank if you do not want to set a custom default value
 
 Wretched Hunger:

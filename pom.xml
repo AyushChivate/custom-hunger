@@ -6,7 +6,7 @@
 
     <groupId>io.github.ayushchivate</groupId>
     <artifactId>CustomHunger</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>CustomHunger</name>

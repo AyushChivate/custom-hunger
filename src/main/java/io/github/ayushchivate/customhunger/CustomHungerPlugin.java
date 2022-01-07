@@ -19,6 +19,8 @@ public final class CustomHungerPlugin extends JavaPlugin {
     private CustomHungerData wealthyData;
     private CustomHungerData aristocraticData;
 
+    private boolean isInDebugMode;
+
     @Override
     public void onEnable() {
 
@@ -30,6 +32,7 @@ public final class CustomHungerPlugin extends JavaPlugin {
 
         /* represents the configurable file that the client can edit */
         this.customHungerConfig = new CustomHungerConfig();
+        this.isInDebugMode = customHungerConfig.isInDebugMode();
 
         /* represents each of the data files to store the contents of the inventory */
         this.wretchedData = new CustomHungerData("wretched.yml", "Wretched");
@@ -56,6 +59,15 @@ public final class CustomHungerPlugin extends JavaPlugin {
         this.comfyData.saveData(this.customHungerCommands.getComfyPages());
         this.wealthyData.saveData(this.customHungerCommands.getWealthyPages());
         this.aristocraticData.saveData(this.customHungerCommands.getAristocraticPages());
+    }
+
+    public void reload(){
+        this.customHungerConfig.reloadConfig();
+        this.isInDebugMode = customHungerConfig.isInDebugMode();
+    }
+
+    public boolean isInDebugMode() {
+        return isInDebugMode;
     }
 
     public void validateFiles(String... fileNames) {

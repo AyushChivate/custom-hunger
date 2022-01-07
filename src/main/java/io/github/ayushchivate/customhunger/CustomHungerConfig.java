@@ -47,4 +47,9 @@ public class CustomHungerConfig extends Config {
         return new int[]{config.getInt("Aristocratic Hunger.Minimum"),
                 config.getInt("Aristocratic Hunger.Maximum")};
     }
+
+    public boolean isInDebugMode(){
+        return config.getBoolean("Debug Mode");
+    }
+
 }
